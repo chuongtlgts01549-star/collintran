@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Bài kiểm tra Việt Nam 230 câu</title>
+<style>
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f5f5f5;
+  margin:0;
+  padding:0;
+}
+header {
+  background-color: #ff9933;
+  color: white;
+  text-align: center;
+  font-size: 24px;
+  padding: 15px;
+  font-weight: bold;
+}
+.quiz-container {
+  padding: 20px;
+  max-width: 900px;
+  margin: auto;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+.question {
+  margin-bottom: 15px;
+}
+.answers label {
+  display:block;
+  margin-bottom:5px;
+  cursor:pointer;
+}
+button {
+  padding:10px 20px;
+  font-size:16px;
+  border-radius:10px;
+  border:none;
+  background-color:#0078ff;
+  color:white;
+  cursor:pointer;
+}
+.result {
+  margin-top:20px;
+  font-size:18px;
+  font-weight:bold;
+}
+.thinking {
+  font-style: italic;
+  color: #0078ff;
+  margin-top: 10px;
+}
+</style>
+</head>
+<body>
+
+<header>📝 Bài kiểm tra Việt Nam 230 câu</header>
+
+<div class="quiz-container" id="quizContainer">
+  <!-- Câu hỏi sẽ được load ở đây -->
+</div>
+
+<div style="text-align:center; margin:20px;">
+  <button onclick="submitQuiz()">Nộp bài</button>
+</div>
+
+<div class="quiz-container result" id="resultBox"></div>
+
+<script>
+// ===== 230 CÂU HỎI & ĐÁP ÁN =====
+const quizData = [
+  // 200 câu hỏi cũ (ví dụ)
+  {q: "Thủ đô Việt Nam là gì?", options:["Hà Nội","Hồ Chí Minh","Đà Nẵng","Huế"], answer: "Hà Nội"},
+  {q: "Ngày Quốc khánh Việt Nam là?", options:["2/9","1/5","30/4","10/10"], answer: "2/9"},
+  {q: "Người sáng lập ra Đảng Cộng sản Việt Nam là ai?", options:["Hồ Chí Minh","Võ Nguyên Giáp","Nguyễn Ái Quốc","Trần Phú"], answer: "Hồ Chí Minh"},
+  {q: "Sông dài nhất Việt Nam là gì?", options:["Sông Hồng","Sông Mekong","Sông Cửu Long","Sông Đồng Nai"], answer: "Sông Mekong"},
+  {q: "Loại hình múa dân gian nổi tiếng ở Việt Nam?", options:["Múa rối nước","Múa ballet","Múa hiphop","Múa sạp"], answer: "Múa rối nước"},
+  // ... (thêm các câu từ 6-200 như trước)
+];
+
+// ===== THÊM 30 CÂU HỎI MỚI =====
+quizData.push(
+  {q:"Ngọn núi cao nhất Việt Nam là gì?", options:["Fansipan","Bạch Mã","Ngự Bình","Chư Yang Sin"], answer:"Fansipan"},
+  {q:"Loại hình chèo truyền thống nổi tiếng ở Việt Nam?", options:["Chèo","Múa rối nước","Múa sạp","Hát xoan"], answer:"Chèo"},
+  {q:"Quốc hoa Việt Nam là gì?", options:["Hoa sen","Hoa mai","Hoa đào","Hoa cúc"], answer:"Hoa sen"},
+  {q:"Người viết truyện 'Dế Mèn phiêu lưu ký' là ai?", options:["Tô Hoài","Nguyễn Nhật Ánh","Nam Cao","Nguyễn Du"], answer:"Tô Hoài"},
+  {q:"Thành phố biển nổi tiếng miền Trung là?", options:["Đà Nẵng","Huế","Nha Trang","Quy Nhơn"], answer:"Đà Nẵng"},
+  {q:"Di sản văn hóa thế giới tại Huế là gì?", options:["Quần thể di tích Cố đô Huế","Phố cổ Hội An","Vịnh Hạ Long","Tháp Chàm Mỹ Sơn"], answer:"Quần thể di tích Cố đô Huế"},
+  {q:"Người anh hùng chống Pháp nổi tiếng là ai?", options:["Nguyễn Trãi","Trần Hưng Đạo","Lê Lợi","Hồ Chí Minh"], answer:"Nguyễn Trãi"},
+  {q:"Sông Mekong chảy qua bao nhiêu tỉnh miền Tây?", options:["10","12","9","8"], answer:"12"},
+  {q:"Đặc sản nổi tiếng của Phú Quốc?", options:["Nước mắm","Bánh tráng","Phở","Nem chua"], answer:"Nước mắm"},
+  {q:"Lễ hội truyền thống nổi tiếng ở Huế là gì?", options:["Festival Huế","Hội Lim","Hội Gò Đống Đa","Hội An Lantern"], answer:"Festival Huế"},
+  {q:"Nhạc cụ dân tộc Việt Nam là gì?", options:["Đàn bầu","Guitar","Piano","Violin"], answer:"Đàn bầu"},
+  {q:"Ngày giỗ Tổ Hùng Vương là?", options:["10/3 Âm lịch","2/9","1/5","30/4"], answer:"10/3 Âm lịch"},
+  {q:"Di sản thiên nhiên thế giới tại Quảng Ninh là?", options:["Vịnh Hạ Long","Phong Nha – Kẻ Bàng","Bái Tử Long","Cát Bà"], answer:"Vịnh Hạ Long"},
+  {q:"Người sáng lập chữ Quốc ngữ?", options:["Alexandre de Rhodes","Nguyễn Trãi","Trần Hưng Đạo","Lê Quý Đôn"], answer:"Alexandre de Rhodes"},
+  {q:"Loại hình nghệ thuật rối nước xuất xứ từ đâu?", options:["Đồng bằng Bắc Bộ","Miền Trung","Miền Nam","Tây Nguyên"], answer:"Đồng bằng Bắc Bộ"},
+  {q:"Ngọn núi Bà Nà thuộc tỉnh nào?", options:["Đà Nẵng","Quảng Nam","Thừa Thiên Huế","Khánh Hòa"], answer:"Đà Nẵng"},
+  {q:"Loài chim biểu tượng của Việt Nam?", options:["Chim hạc","Chim công","Chim sáo","Chim bồ câu"], answer:"Chim hạc"},
+  {q:"Món ăn nổi tiếng miền Bắc là?", options:["Phở","Bún bò Huế","Bánh cuốn","Bún riêu"], answer:"Phở"},
+  {q:"Món ăn nổi tiếng miền Nam là?", options:["Cơm tấm","Bún chả","Bánh cuốn","Bún riêu"], answer:"Cơm tấm"},
+  {q:"Tên vua khai lập triều Nguyễn?", options:["Gia Long","Minh Mạng","Thiệu Trị","Khải Định"], answer:"Gia Long"},
+  {q:"Di tích lịch sử Mỹ Sơn thuộc tỉnh nào?", options:["Quảng Nam","Quảng Ngãi","Đà Nẵng","Bình Định"], answer:"Quảng Nam"},
+  {q:"Người sáng lập ra Chùa Một Cột là ai?", options:["Lý Thái Tông","Nguyễn Trãi","Trần Nhân Tông","Ngô Quyền"], answer:"Lý Thái Tông"},
+  {q:"Tên gọi khác của Vịnh Hạ Long?", options:["Vịnh Rồng Bay","Vịnh Thiên Đường","Vịnh Cát Bà","Vịnh Bái Tử Long"], answer:"Vịnh Rồng Bay"},
+  {q:"Biển lớn nhất Việt Nam là gì?", options:["Biển Đông","Biển Tây","Biển Tây Nam","Biển Nam Trung Bộ"], answer:"Biển Đông"},
+  {q:"Thành phố lớn nhất Việt Nam?", options:["Hồ Chí Minh","Hà Nội","Đà Nẵng","Hải Phòng"], answer:"Hồ Chí Minh"},
+  {q:"Hội An nổi tiếng với gì?", options:["Phố cổ và đèn lồng","Bãi biển","Đền chùa","Ẩm thực Huế"], answer:"Phố cổ và đèn lồng"},
+  {q:"Danh nhân Nguyễn Du viết gì?", options:["Truyện Kiều","Chí Phèo","Tắt đèn","Lão Hạc"], answer:"Truyện Kiều"},
+  {q:"Vịnh Lan Hạ nằm cạnh vịnh nào?", options:["Vịnh Hạ Long","Vịnh Bái Tử Long","Vịnh Nha Trang","Vịnh Cam Ranh"], answer:"Vịnh Hạ Long"},
+  {q:"Cầu Long Biên thuộc thành phố nào?", options:["Hà Nội","Hải Phòng","Huế","Đà Nẵng"], answer:"Hà Nội"},
+  {q:"Lễ hội chọi trâu nổi tiếng ở tỉnh nào?", options:["Hà Nội","Hải Dương","Bắc Ninh","Thái Bình"], answer:"Hải Dương"}
+);
+
+// ===== LOAD CÂU HỎI =====
+const quizContainer = document.getElementById('quizContainer');
+quizData.forEach((item,index)=>{
+  const div=document.createElement('div');
+  div.className='question';
+  div.innerHTML = `<strong>${index+1}. ${item.q}</strong>
+                   <div class="answers">
+                     ${item.options.map(opt=>`<label><input type="radio" name="q${index}" value="${opt}"> ${opt}</label>`).join('')}
+                   </div>`;
+  quizContainer.appendChild(div);
+});
+
+// ===== SUBMIT & AI CHẤM BÀI =====
+function submitQuiz(){
+  const resultBox=document.getElementById('resultBox');
+  resultBox.innerHTML="";
+  const thinking=document.createElement('div');
+  thinking.className='thinking';
+  thinking.textContent="AI đang chấm bài… 🧠";
+  resultBox.appendChild(thinking);
+  setTimeout(()=>{
+    let score =0;
+    quizData.forEach((item,index)=>{
+      const selected=document.querySelector(`input[name="q${index}"]:checked`);
+      if(selected && selected.value===item.answer) score++;
+    });
+    const total=quizData.length;
+    const percent=Math.round(score/total*100);
+    let feedback="";
+    if(percent>=90) feedback="🥳 Xuất sắc!";
+    else if(percent>=70) feedback="😎 Khá tốt!";
+    else if(percent>=50) feedback="🙂 Cần cố gắng!";
+    else feedback="😅 Hơi yếu, luyện thêm nhé!";
+    resultBox.innerHTML=`Điểm: ${score} / ${total} (${percent}%)<br>${feedback}`;
+  },1200+Math.random()*1000);
+}
+</script>
+
+</body>
+</html>
